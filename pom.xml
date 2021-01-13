@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.0</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.github.michaelsteven</groupId>
+	<artifactId>springboot-items-api</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>items-api</name>
+	<description>SpringBoot Items API microservice</description>
+
+	<properties>
+		<java.version>8</java.version>
+		<springdoc.version>1.4.8</springdoc.version>
+	    <classgraph.version>4.8.90</classgraph.version>
+	    <jacoco.maven.plugin>0.8.6</jacoco.maven.plugin>
+	</properties>
+
+	<dependencies>
+	     <!-- Required for OpenAPI Annotations at compile time and runtime -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-common</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+
+        <!-- Required for OpenAPI Annotations at runtime -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-webmvc-core</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+
+		<!-- Required for OpenAPI pageable support -->
+		<dependency>
+		    <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-data-rest</artifactId>
+            <version>${springdoc.version}</version>
+		</dependency>
+
+        <!-- Optional, comment out to disable the swagger ui -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+
+        <!-- Required when the Swagger-UI is enabled, at runtime -->
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>${classgraph.version}</version>
+        </dependency>
+	
+	    <!-- Required SpringBoot libraries for our implementation -->
+	    <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+	   <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		
+		<dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+	
+		
+	    <!-- Required for Javax Validation to work -->
+        <dependency> 
+		    <groupId>org.springframework.boot</groupId> 
+		    <artifactId>spring-boot-starter-validation</artifactId> 
+		</dependency>
+		
+		<!--  Lombok -->
+       <dependency>
+       	   <groupId>org.projectlombok</groupId>
+           <artifactId>lombok</artifactId>
+       </dependency>
+    
+    
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			
+			<!-- generates code coverage reports -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.maven.plugin}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+		</plugins>
+	</build>
+
+</project>
