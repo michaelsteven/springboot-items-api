@@ -56,4 +56,4 @@ logging:
     root: INFO
     org.springframework.security: INFO
     org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
-    com.ibm.github.michaelhepfer.items: TRACE
+    com.github.michaelsteven.archetype.springboot.items: TRACE
