@@ -16,7 +16,7 @@ management:
 spring:
   profiles: default
   application:
-    name: loanrequests-api
+    name: springboot-items-api
   data:
     web:
       pageable:
@@ -28,25 +28,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${mysql_username}
     password: ${mysql_password} # dummy password,
-  #data:
-  #  mongodb:
-  #    authentication-database: admin
-  #    database: bofa_patterns_dev
-  #    port: 27017
-  #    host: localhost
-  #datasource:
-  #  username: sa
-  #  password: 
-  #  driverClassName: org.h2.Driver
-  #  url: jdbc:h2:mem:testdb
-  #  initialization-mode: always
   jpa:
     hibernate:
       ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
-    #database-platform: org.hibernate.dialect.H2Dialect
   redis:  
     host: localhost
     port: 6379
