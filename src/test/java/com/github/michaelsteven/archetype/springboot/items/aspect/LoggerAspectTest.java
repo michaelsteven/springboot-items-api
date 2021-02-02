@@ -22,7 +22,6 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.github.michaelsteven.archetype.springboot.items.aspect.LoggerAspect;
 import com.github.michaelsteven.archetype.springboot.items.service.ItemsService;
 
 /**

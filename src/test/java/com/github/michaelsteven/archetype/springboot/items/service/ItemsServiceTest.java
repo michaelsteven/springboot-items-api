@@ -27,9 +27,6 @@ import com.github.michaelsteven.archetype.springboot.items.model.ConfirmationDto
 import com.github.michaelsteven.archetype.springboot.items.model.ItemDto;
 import com.github.michaelsteven.archetype.springboot.items.model.ItemEntity;
 import com.github.michaelsteven.archetype.springboot.items.repository.ItemRepository;
-import com.github.michaelsteven.archetype.springboot.items.service.ItemsService;
-import com.github.michaelsteven.archetype.springboot.items.service.ItemsServiceImpl;
-
 
 /**
  * The ItemsService Unit test class

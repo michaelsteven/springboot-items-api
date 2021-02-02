@@ -19,7 +19,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.github.michaelsteven.archetype.springboot.items.aspect.RepositoryAspect;
 import com.github.michaelsteven.archetype.springboot.items.model.ItemEntity;
 
 /**
