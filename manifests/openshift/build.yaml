@@ -32,7 +32,7 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: 'openjdk:8-jdk-slim'
+          name: 'ubi8/openjdk-8:latest'
       type: Docker
     triggers:
       - type: ConfigChange
