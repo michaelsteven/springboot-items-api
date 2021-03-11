@@ -25,14 +25,14 @@ objects:
     source:
       git:
         uri: git@github.com:${ORG}/${APP}.git
-      sourceSecret:
-        name: ${APP}-git
+#      sourceSecret:
+#        name: ${APP}-git
       type: Git
     strategy:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: 'ubi8/openjdk-8:latest'
+          name: 'registry.access.redhat.com/ubi8/openjdk-8:latest'
       type: Docker
     triggers:
       - type: ConfigChange
