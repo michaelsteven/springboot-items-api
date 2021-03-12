@@ -5,12 +5,12 @@ This project is intended to serve as a CRUD archetype using Spring Boot and Spri
 ## Deploying to Openshift
 Explore running in OpenShift with a Developer Sandbox (free) account available in RedHat: https://developers.redhat.com/developer-sandbox.
 
-Below is an step-by-step of a way to build and deploy this microservice using the CLI. They could also be used part of a CI/CD pipeline.
+Below is an step-by-step of a way to build and deploy this microservice using the CLI. They could also be used as part of an external CI/CD pipeline.
 
 1. clone down this git repository
 2. build the code with maven (mvn clean install)
-3. install the OC command
-4  log in to openshift using the CLI
+3. install the OC CLI
+4. log in to OpenShift with the OC CLI using a token generated from the OpenShift Console
 5. change to the right project (if needed)
 6. create a ConfigMap with your application settings:
 ``oc create configmap springboot-items-api --from-file=application.yaml``
