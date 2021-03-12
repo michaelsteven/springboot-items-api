@@ -29,28 +29,31 @@ objects:
             deploymentconfig: ${APP}
       spec:
         containers:
-          - image: ${APP}:latest
+          - image: ${REGISTRY}/${APP}:latest
             name: ${APP}
             ports:
-            - containerPort: 8080
+            - name: app-port
+              containerPort: 8080
               protocol: TCP
-            - containerPort: 9001
+            - name: liveness-port
+              containerPort: 9001
               protocol: TCP
             resources:
               limits:
-                cpu: "2"
+                #cpu: "2"
+                cpu: "0.5"
                 memory: 385Mi
               requests:
                 cpu: "0.5"
                 memory: 308Mi
-            args:
-            - -cpus
-            - "2"
+            #args:
+            #- -cpus
+            #- "2"
             readinessProbe:
               failureThreshold: 3
               httpGet:
                 path: /actuator/health
-                port: 9001
+                port: liveness-port
                 scheme: HTTP
               initialDelaySeconds: 60
               periodSeconds: 10
@@ -60,12 +63,12 @@ objects:
               failureThreshold: 10
               httpGet:
                 path: /actuator/health
-                port: 9001
+                port: liveness-port
                 scheme: HTTP
               initialDelaySeconds: 130
               periodSeconds: 10
               successThreshold: 1
-              timeoutSeconds: 10
+              timeoutSeconds: 5
             env:
               - name: spring_config_location
                 value: /config/application.yaml
@@ -97,8 +100,6 @@ objects:
         restartPolicy: Always
         schedulerName: default-scheduler
         securityContext: {}
-        serviceAccount: fulfillment
-        serviceAccountName: fulfillment
         terminationGracePeriodSeconds: 30
       test: false
       triggers:
@@ -156,3 +157,6 @@ parameters:
   name: APP
   required: true
   value: springboot-items-api
+- description: Container Registry
+  name: REGISTRY
+  value: image-registry.openshift-image-registry.svc:5000/michael-hepfer-dev
