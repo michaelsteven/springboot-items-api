@@ -2,6 +2,7 @@ package com.github.michaelsteven.archetype.springboot.items.service;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Locale;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -58,8 +59,8 @@ public class ItemsServiceImpl implements ItemsService {
 	@Override
 	@Compliance(action = ComplianceAction.read)
 	public Page<ItemDto> getItems(Pageable pageable){
-		Page<ItemEntity> page = itemRepository.findAll(pageable);
-		return page.map(obj -> convert(obj));
+		return itemRepository.findAll(pageable)
+				.map(this::convert);
 	}
 	
 	
@@ -72,8 +73,9 @@ public class ItemsServiceImpl implements ItemsService {
 	@Override
 	@Compliance(action = ComplianceAction.read)
 	public Optional<ItemDto> getItemById(long id){
-		Optional<ItemEntity> optionalEntity = itemRepository.findById(id);
-		return optionalEntity.map(entity -> Optional.of(convert(entity))).orElse(Optional.empty());
+		return itemRepository.findById(id)
+				.map(entity -> Optional.of(convert(entity)))
+				.orElse(Optional.empty());
 	}
 	
 	
@@ -102,17 +104,19 @@ public class ItemsServiceImpl implements ItemsService {
 	@Transactional
 	@Compliance(action = ComplianceAction.update)
 	public ConfirmationDto editItem(@NotNull @Valid ItemDto itemDto) {
-		ItemEntity originalEntity = itemRepository.findById(itemDto.getId())
-				.orElseThrow(() -> new ValidationException(
+		return itemRepository.findById(itemDto.getId())
+				.map( entity -> { 
+						applyToEntity(itemDto, entity); //void method - entity modified byref
+						return entity; 
+					})
+				.map( itemRepository::save )
+				.map( savedItem -> createConfirmationDto(ItemStatus.SUBMITTED, savedItem) )
+				.orElseThrow( () -> new ValidationException (
 						messageSource.getMessage("itemsservice.validationexception.entitynotfoundforid", 
-								new Object[] { String.valueOf(itemDto.getId()) },
-								LocaleContextHolder.getLocale()
-								)
-						)
-					);
-		convert(itemDto, originalEntity);
-		ItemEntity savedItem = itemRepository.save(originalEntity);
-		return createConfirmationDto(ItemStatus.SUBMITTED, savedItem);
+							new Object[] { String.valueOf(itemDto.getId()) },
+							LocaleContextHolder.getLocale() )
+					)
+				);
 	}
 	
 	
@@ -124,7 +128,8 @@ public class ItemsServiceImpl implements ItemsService {
 	@Override
 	@Compliance(action = ComplianceAction.delete)
 	public void deleteItemById(long id){
-		itemRepository.findById(id).ifPresent(entity -> itemRepository.delete(entity));
+		itemRepository.findById(id)
+			.ifPresent(entity -> itemRepository.delete(entity));
 	}
 	
 	
@@ -159,17 +164,17 @@ public class ItemsServiceImpl implements ItemsService {
 	 */
 	private ItemEntity convert(ItemDto sourceDto) {
 		ItemEntity entity = new ItemEntity();
-		convert(sourceDto, entity);
+		applyToEntity(sourceDto, entity);
 		return entity;
 	}
 	
 	/**
-	 * Convert.
+	 * Apply changes to entity.
 	 *
 	 * @param sourceDto the source dto
 	 * @param targetEntity the target entity
 	 */
-	private void convert(@NotNull ItemDto sourceDto, ItemEntity targetEntity) {
+	private void applyToEntity(@NotNull ItemDto sourceDto, ItemEntity targetEntity) {
 		if(null != targetEntity) {
 			targetEntity.setId(sourceDto.getId());
 			targetEntity.setName(sourceDto.getName());
