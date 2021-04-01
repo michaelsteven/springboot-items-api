@@ -117,8 +117,8 @@ public class ItemsController {
     @SecurityRequirement(name = "jwt", scopes = {})
     @GetMapping(API_PATH + "/{id}")
     public ResponseEntity<ItemDto> getItemById(@PathVariable long id){
-    	Optional<ItemDto> optionalResponse = itemsService.getItemById(id);
-    	return optionalResponse.map(response -> ResponseEntity.ok().body(response))
+    	return itemsService.getItemById(id)
+    			.map(response -> ResponseEntity.ok().body(response))
     			.orElse(ResponseEntity.notFound().build());
     }
     
