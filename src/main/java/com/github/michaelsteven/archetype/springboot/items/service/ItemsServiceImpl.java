@@ -129,7 +129,7 @@ public class ItemsServiceImpl implements ItemsService {
 	@Compliance(action = ComplianceAction.delete)
 	public void deleteItemById(long id){
 		itemRepository.findById(id)
-			.ifPresent(entity -> itemRepository.delete(entity));
+			.ifPresent(itemRepository::delete);
 	}
 	
 	
