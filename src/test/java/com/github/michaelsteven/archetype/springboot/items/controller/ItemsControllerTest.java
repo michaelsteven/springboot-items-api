@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -58,13 +59,9 @@ import com.github.michaelsteven.archetype.springboot.items.service.ItemsService;
 public class ItemsControllerTest
 {
     private MockMvc mockMvc;
-
     private ItemsService itemsService;
-    
     private MessageSource messageSource;
-
     private static final String API_VERSION = "v1";
-
     private ObjectMapper objectMapper;
 
     /**
@@ -73,13 +70,10 @@ public class ItemsControllerTest
     @BeforeEach
     void setup()
     {
-        //ItemsController itemsController = new ItemsController();
         itemsService = Mockito.mock(ItemsService.class);
         messageSource = Mockito.mock(MessageSource.class);
         ItemsController itemsController = new ItemsController(itemsService, messageSource);
         
-        //ReflectionTestUtils.setField(itemsController, "itemsService", itemsService);
-
         mockMvc = MockMvcBuilders.standaloneSetup(itemsController)
         		   .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
         		   .setControllerAdvice(new RestExceptionHandler())
@@ -348,6 +342,59 @@ public class ItemsControllerTest
 	                    .accept(MediaType.APPLICATION_JSON);
 	        }
             
+            /**
+             * Then should throw 400.
+             *
+             * @throws Exception the exception
+             */
+            @Test
+            @DisplayName("Then should throw 400 Bad Request")
+            void thenShouldThrow400() throws Exception
+            {
+                // make the request and check response code
+                mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.status().isBadRequest())
+                        .andDo(MockMvcResultHandlers.print()).andReturn();
+            }
+
+            /**
+             * Then response should be api error.
+             *
+             * @throws Exception the exception
+             */
+            @Test
+            @DisplayName("Then response object should be ApiError")
+            void thenResponseShouldBeApiError() throws Exception
+            {
+                // make the request and verify the ApiError object
+                MvcResult mvcResult = mockMvc.perform(requestBuilder).andReturn();
+                verifyApiError(mvcResult, HttpMessageNotReadableException.class, EXPECTED_ERROR);
+            }
+        }
+        
+        @Nested
+        @DisplayName("When the item name is null")
+        class WhenItemNameIsNull {
+            final static String EXPECTED_ERROR = "name: Cannot be null.";
+            MockHttpServletRequestBuilder requestBuilder;
+            private ItemDto itemDto = null;
+            
+	        /**
+	         * Setup.
+	         *
+	         * @throws JsonProcessingException the json processing exception
+	         */
+	        @BeforeEach
+	        void setup() throws JsonProcessingException
+	        {
+	        	itemDto = new ItemDto();
+
+                // build the request
+                final String jsonContent = objectMapper.writeValueAsString(itemDto);
+                requestBuilder = MockMvcRequestBuilders.post("/api/" + API_VERSION + "/items")
+                        .characterEncoding("utf-8").content(jsonContent).contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON);
+	        }
+	        
             /**
              * Then should throw 400.
              *
