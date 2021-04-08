@@ -185,7 +185,8 @@ public class ItemDtoTest {
 	private <T> void assertConstraintViolation(T itemDto, String fieldName, String expectedMessage) {
 		Set<ConstraintViolation<T>> constraintViolations = validator.validate(itemDto);
 		assertFalse(constraintViolations.isEmpty());				
-		assertTrue( constraintViolations.stream().anyMatch(v -> containsPropertyName(v, fieldName) && v.getMessage().contains(expectedMessage)));
+		assertTrue( constraintViolations.stream().anyMatch(v -> containsPropertyName(v, fieldName) 
+				                                                && v.getMessage().contains(expectedMessage)));
 	}
 	
 	/**
