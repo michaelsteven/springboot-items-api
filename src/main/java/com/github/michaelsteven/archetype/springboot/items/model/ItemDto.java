@@ -35,6 +35,7 @@ public class ItemDto {
 	/** The name. */
 	@Schema(name = "name", description="The name of the item", example = "wigit5spr")
 	@NotNull(message = "{itemdto.null}")
+	@Size(min  = 1, max = 25, message = "{itemdto.textlimit}")
 	private String name;
 	
 	/** The description. */
