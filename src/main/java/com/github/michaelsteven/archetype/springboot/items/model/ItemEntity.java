@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
  * Instantiates a new item entity.
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode()
 @NoArgsConstructor
 @Entity
 @Table(name = "items")
